@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Secure Terminal</title>
+
+<style>
+body{
+    margin:0;
+    background:black;
+    color:#00ff9c;
+    font-family:monospace;
+    overflow:hidden;
+}
+
+#terminal{
+    padding:20px;
+    font-size:20px;
+    white-space:pre-line;
+}
+
+/* Glitch effect */
+.glitch{
+    animation: glitch 0.15s infinite;
+}
+
+@keyframes glitch{
+    0%{text-shadow:2px 0 red;}
+    50%{text-shadow:-2px 0 blue;}
+    100%{text-shadow:2px 0 red;}
+}
+
+/* Screen shake */
+.shake{
+    animation: shake 0.25s;
+}
+
+@keyframes shake{
+    0%{transform:translate(3px,3px);}
+    25%{transform:translate(-3px,-3px);}
+    50%{transform:translate(3px,-3px);}
+    75%{transform:translate(-3px,3px);}
+    100%{transform:translate(0);}
+}
+</style>
+</head>
+
+<body onclick="goFullscreen()">
+
+<div id="terminal"></div>
+
+<script>
+
+const terminal = document.getElementById("terminal");
+
+const lines = [
+"> Initializing secure breach protocol...",
+"> Connecting to target device...",
+"> IP located: 192.168.0.7",
+"> Injecting exploit...",
+"> Access granted ✔",
+"> Cracking password..."
+];
+
+let i = 0;
+let char = 0;
+
+function typeLine(){
+    if(i < lines.length){
+        if(char < lines[i].length){
+            terminal.innerHTML += lines[i][char];
+            char++;
+            setTimeout(typeLine, 30);
+        }else{
+            terminal.innerHTML += "\n\n";
+            i++;
+            char = 0;
+
+            if(i === lines.length){
+                setTimeout(passwordHack, 700);
+            }else{
+                setTimeout(typeLine, 400);
+            }
+        }
+    }
+}
+
+function randomPassword(length){
+    const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%";
+    let pass="";
+    for(let j=0;j<length;j++){
+        pass += chars[Math.floor(Math.random()*chars.length)];
+    }
+    return pass;
+}
+
+function passwordHack(){
+    let attempts = 0;
+    terminal.classList.add("glitch");
+
+    let hack = setInterval(()=>{
+        attempts++;
+
+        terminal.innerHTML += "> Trying password: " + randomPassword(10) + "\n";
+
+        document.body.classList.add("shake");
+        setTimeout(()=>document.body.classList.remove("shake"),200);
+
+        if(attempts > 12){
+            clearInterval(hack);
+            terminal.classList.remove("glitch");
+
+            setTimeout(()=>{
+                terminal.innerHTML += "\n> PASSWORD FOUND: KLARY\n";
+            },500);
+
+            setTimeout(()=>{
+                terminal.innerHTML += "\n\n😂 RELAX! THIS WAS JUST A PRANK!";
+            },1500);
+        }
+
+        terminal.scrollTop = terminal.scrollHeight;
+
+    },120);
+}
+
+function goFullscreen(){
+    if(document.documentElement.requestFullscreen){
+        document.documentElement.requestFullscreen();
+    }
+}
+
+typeLine();
+
+</script>
+
+</body>
+</html>
